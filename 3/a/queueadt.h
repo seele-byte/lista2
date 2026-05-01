@@ -1,0 +1,10 @@
+typedef struct Queue QUEUE;
+QUEUE* create_queue();
+int enqueue(QUEUE*queue,int val);
+int dequeue(QUEUE*queue,int*dataoutptr);
+int queue_front (QUEUE*queue,int*dataoutptr);
+int queue_rear (QUEUE*queue,int*dataoutptr);
+void destroy_queue(QUEUE*queue);
+int queue_size(QUEUE*queue);
+int empty_queue(QUEUE*queue);
+int full_queue(QUEUE*queue);
