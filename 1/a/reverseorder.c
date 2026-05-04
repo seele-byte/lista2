@@ -4,16 +4,18 @@
 
 int main ()
 {
+    int *p = &valor;
     int valor;
     STACK* stack = create_stack();
     while(!full_stack(stack))
     {
-        scanf("%d",&valor);
-        push_stack(stack,valor);
+        scanf("%d", &valor);
+        push_stack(stack, valor);
     }
     printf("\n");
     while(!empty_stack(stack))
     {
-        printf(" %d ",pop_stack(stack));
+        pop_stack(stack, &valor);
+        printf(" %d ", valor);
     }
 }

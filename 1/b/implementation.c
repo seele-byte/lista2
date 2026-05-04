@@ -5,19 +5,21 @@
 int main ()
 {
     int valor,contador;
+    int *p = &valor;
     STACK* stack = create_stack();
-    printf("Digite o número de inteiros que a sequência terá\n");
+    printf("Digite o numero de inteiros que a sequencia tera\n");
     scanf("%d",&contador);
-    printf("Digite a sequência: \n");
+    printf("Digite a sequencia: \n");
     while(contador > 0)
     {
         scanf("%d",&valor);
-        push_stack(stack,valor);
+        push_stack(stack, valor);
         contador--;
     }
     printf("\n");
     while(!empty_stack(stack))
     {
-        printf(" %d ",pop_stack(stack));
+        pop_stack(stack, &valor);
+        printf(" %d ", valor);
     }
 }

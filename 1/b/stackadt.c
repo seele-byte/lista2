@@ -1,6 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "stackadt.h"
+#define STACK_OK 1
+#define STACK_ERR 0
+#define STACK_ERR_NULL -1
 
 typedef struct stNode {
     int data;
@@ -24,41 +27,37 @@ STACK* create_stack()
     stack->head = NULL;
     return stack;
 }
-void push_stack(STACK* stack,int valor)
+int push_stack(STACK* stack,int valor)
 {
+    if(stack == NULL) return STACK_ERR_NULL;
     NODE* node = (NODE*)malloc(sizeof(NODE));
-    if (node == NULL)
-    {
-        printf("Erro de alocação de memória!\n");
-        exit(1);
-    }
+    if (node == NULL) return STACK_ERR_NULL;
     node->data = valor;
     node->prox = stack->head;
     stack->head = node;
     stack->count++;
+    return STACK_OK;
 }
-int pop_stack(STACK* stack)
+int pop_stack(STACK* stack, int *out)
 {
-    if(empty_stack(stack))
-    {
-        printf("EMPTY STACK\n");
-        return 0;
-    }
+    if(stack == NULL || out == NULL) return STACK_ERR_NULL;
+    if(empty_stack(stack)) return STACK_ERR;
     NODE* aux = stack->head;
-    int aux_val = aux->data;
+    *out = aux->data;
     stack->head = stack->head->prox;
     free(aux);
     stack->count--;
-    return aux_val;
+    return STACK_OK;
 }
-int peek(STACK* stack)
+int peek(STACK* stack, int *out)
 {
+    if(stack == NULL || out == NULL) return STACK_ERR_NULL;
     if(empty_stack(stack))
     {
-        printf("EMPTY STACK\n");
-        return 0;
+        return STACK_ERR;
     }
-    return stack->head->data;
+    *out = stack->head->data;
+    return STACK_OK;
 }
 int empty_stack(STACK*stack)
 {
@@ -68,9 +67,9 @@ int stack_count(STACK*stack)
 {
     return stack->count;
 }
-void destroy_stack(STACK*stack)
+int destroy_stack(STACK*stack)
 {
-    if (stack == NULL) return;
+    if (stack == NULL) return STACK_ERR_NULL;
     NODE *temp;
     while(!empty_stack(stack))
     {
@@ -79,4 +78,5 @@ void destroy_stack(STACK*stack)
         free(temp);
     }
     free(stack);
+    return STACK_OK;
 }

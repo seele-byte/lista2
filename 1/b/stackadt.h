@@ -2,14 +2,14 @@ typedef struct stack STACK;
 //cria uma estrutura stack
 STACK* create_stack();
 //adiciona um elemento a pilha
-void push_stack(STACK* stack,int valor);
+int push_stack(STACK* stack,int valor);
 //remove e retorna o elemento no topo da pilha
-int pop_stack(STACK* stack);
+int pop_stack(STACK* stack, int *out);
 //retorna o elemento no topo da pilha
-int peek(STACK* stack);
+int peek(STACK* stack, int *out);
 //retorna 1 caso a pilha esteja vazia, 0 caso contrário
 int empty_stack(STACK*stack);
 //retorna o tamanho da pilha
 int stack_count(STACK*stack);
 //destroi a pilha
-void destroy_stack(STACK*stack);
+int destroy_stack(STACK*stack);

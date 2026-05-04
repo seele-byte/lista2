@@ -2,6 +2,9 @@
 #include <stdio.h>
 #include "stackadt.h"
 #define TAMANHO 10
+#define STACK_OK 1
+#define STACK_ERR 0
+#define STACK_ERR_NULL -1
 
 typedef struct stack {
     int top;
@@ -21,34 +24,27 @@ STACK* create_stack()
     return stack;
 }
 
-void push_stack(STACK* stack,int valor) 
+int push_stack(STACK* stack,int valor) 
 {
-    if (stack == NULL) return;
-    else if(full_stack(stack))
-    {
-        printf("FULL STACK!\n");
-        return;
-    }
+    if (!stack) return STACK_ERR_NULL;
+    if(full_stack(stack)) return STACK_ERR;
     stack->vetor[++stack->top] = valor;
+    return STACK_OK;
 }
 
-int pop_stack(STACK* stack)
+int pop_stack(STACK* stack, int *out)
 {
-    if(empty_stack(stack))
-    {
-        printf("EMPTY STACK!\n");
-        return 0;
-    }
-    return stack->vetor[stack->top--];
+    if(!stack || !out) return STACK_ERR_NULL;
+    if(empty_stack(stack))  return STACK_ERR;
+    *out = stack->vetor[stack->top--];
+    return STACK_OK;
 }
-int peek(STACK* stack)
+int peek(STACK* stack, int *out)
 {
-    if (empty_stack(stack))
-    {
-        printf("EMPTY STACK!");
-        exit(1);
-    }
-    return stack->vetor[stack->top];
+    if (!stack || !out) return STACK_ERR_NULL;
+    if (empty_stack(stack)) return STACK_ERR;
+    *out = stack->vetor[stack->top];
+    return STACK_OK;
 }
 int empty_stack(STACK*stack)
 {
@@ -62,7 +58,8 @@ int stack_count(STACK*stack)
 {
     return stack->top+1;
 }
-void destroy_stack(STACK*stack)
+int destroy_stack(STACK*stack)
 {
     free(stack);
+    return STACK_OK;
 }
