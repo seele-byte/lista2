@@ -4,8 +4,8 @@
 
 int main ()
 {
-    int *p = &valor;
     int valor;
+    int *p = &valor;
     STACK* stack = create_stack();
     while(!full_stack(stack))
     {
