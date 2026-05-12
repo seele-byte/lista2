@@ -140,3 +140,12 @@ static NODE* buscapos(LISTA *lista, int elemento)
 
     return pPre;
 }
+int lista_cheia(LISTA* lista){
+    NODE* temp = (NODE*)malloc(sizeof(NODE));
+    if(!temp){
+        return 1;
+    } else {
+        free(temp);
+        return 0;
+    }
+}

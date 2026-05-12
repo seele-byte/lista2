@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "stackadt.h"
 
+#define TAMANHO 7
 
 typedef struct stack {
     int top;
@@ -21,27 +22,44 @@ STACK* create_stack()
     return stack;
 }
 
-int push_stack(STACK* stack,int valor) 
+void push_stack(STACK* stack,int valor) 
 {
-    if (!stack) return STACK_ERR_NULL;
-    if(full_stack(stack)) return STACK_ERR;
+    if (!stack){
+        printf("Erro de Alocação de memória\n");
+        return;
+    }
+    if(full_stack(stack)){
+        printf("Pilha Cheia!\n");
+        return;
+    }
     stack->vetor[++stack->top] = valor;
-    return STACK_OK;
 }
 
-int pop_stack(STACK* stack, int *out)
+void pop_stack(STACK* stack, int *out)
 {
-    if(!stack || !out) return STACK_ERR_NULL;
-    if(empty_stack(stack))  return STACK_ERR;
+    if(!stack || !out){
+        printf("Não foi possível retirar o elemento da pilha\n");
+        return;
+    }
+    if(empty_stack(stack)){
+        printf("Não é possivel remover o elemento de uma pilha vazia!\n");
+        return;
+    }
     *out = stack->vetor[stack->top--];
-    return STACK_OK;
+    return;
 }
-int peek(STACK* stack, int *out)
+void peek(STACK* stack, int *out)
 {
-    if (!stack || !out) return STACK_ERR_NULL;
-    if (empty_stack(stack)) return STACK_ERR;
+    if (!stack || !out){
+        printf("Não foi possível retirar o elemento da pilha\n");
+        return;
+    }
+    if (empty_stack(stack)){
+        printf("A pilha está vazia!\n");
+        return;
+    }
     *out = stack->vetor[stack->top];
-    return STACK_OK;
+    return;
 }
 int empty_stack(STACK*stack)
 {
@@ -55,8 +73,7 @@ int stack_count(STACK*stack)
 {
     return stack->top+1;
 }
-int destroy_stack(STACK*stack)
+void destroy_stack(STACK*stack)
 {
     free(stack);
-    return STACK_OK;
 }

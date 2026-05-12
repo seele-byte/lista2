@@ -5,7 +5,7 @@
 int main ()
 {
     int op = 1,data;
-    void*dataout = &data;
+    void*dataout = malloc(sizeof(int));
     QUEUE* fila = create_queue();
     do
     {
@@ -41,5 +41,6 @@ int main ()
         printf("============================================\n");
     }while(op != 6);
     destroy_queue(fila);
+    free(dataout);
     printf("Programa encerrado\n");
 }

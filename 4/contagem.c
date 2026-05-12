@@ -12,10 +12,9 @@ typedef struct stLista
 }NODE_PALAVRAS;
 NODE_PALAVRAS* head_palavras = NULL;
 void adicionar_palavra (char* palavra);
-void contrar_caracteres(int* caracteres_contador,char* palavra);
 int main ()
 {
-    int caracteres_contador [26] = {0},check = 0,mais_frequente = 0;
+    int check = 0,mais_frequente = 0;
     char palavra [46],caractere_mais_repetido;
     FILE *arq;
     int count = 0,tamanho_maior_fila = 0;
@@ -27,7 +26,6 @@ int main ()
     }
     while((fscanf(arq,"%s",palavra)) != EOF)
     {
-        contrar_caracteres(caracteres_contador,palavra);
         adicionar_palavra(palavra);
         count++;
     }
@@ -45,15 +43,7 @@ int main ()
         destroy_queue(aux->fila);
         free(aux);
     }
-    for(int i = 0;i<26;i++)
-    {
-        if(caracteres_contador[i] > check)
-        {
-            check = caracteres_contador[i];
-            mais_frequente = i;
-        }
-    }
-    printf("O caractere que mais aparece na letra da musica é: %c aparecendo um total de %d vezes\n",mais_frequente+'a',check);
+    printf("\nO caractere que aparece com maior frequência é %c\n",caractere_mais_repetido);
     fclose(arq);
 }
 void adicionar_palavra(char *palavra)
@@ -93,14 +83,4 @@ void adicionar_palavra(char *palavra)
     node->next = NULL;
     enqueue(node->fila, palavra, strlen(palavra) + 1);
     temp->next = node;
-}
-void contrar_caracteres(int* caracteres_contador,char* palavra)
-{
-    char *temp = palavra;
-    while(*temp)
-    {
-        *temp = tolower((unsigned char)*temp);
-        caracteres_contador[*temp - 'a']++;
-        temp++;
-    }
 }

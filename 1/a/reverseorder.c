@@ -5,12 +5,11 @@
 int main ()
 {
     int valor,check;
-    int *p = &valor;
     STACK* stack = create_stack();
     while(!full_stack(stack))
     {
         scanf("%d", &valor);
-        check = push_stack(stack, valor);
+        push_stack(stack, valor);
     }
     printf("\n");
     while(!empty_stack(stack))

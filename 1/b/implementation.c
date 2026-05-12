@@ -5,7 +5,6 @@
 int main ()
 {
     int valor,contador;
-    int *p = &valor;
     STACK* stack = create_stack();
     printf("Digite o numero de inteiros que a sequencia tera\n");
     scanf("%d",&contador);

@@ -68,6 +68,7 @@ int buscar_elemento(LISTA* lista,void*key, void**pdataoutPtr)
     return found;
 }
 void destruir_lista(LISTA *lista){
+    if(!lista) return;
     NODE *deletePtr;
         while(lista->count > 0){
             free(lista->head->dataptr);
@@ -83,7 +84,7 @@ static int _search(LISTA* lista,NODE** pPre,NODE** pLoc,void* datainPtr){
     *pPre = NULL;
     *pLoc = lista->head;
     if(lista->count == 0) return 0;
-    while((result = COMPARE) > 0)
+    while(*pLoc != NULL && ((result = COMPARE) > 0))
     {
         *pPre = *pLoc;
         *pLoc = (*pLoc)->next;
@@ -115,8 +116,10 @@ static int _insert(LISTA* lista,NODE *pPre,void*datainPtr,size_t size){
     lista->count++;
     return 1;
     erro:
-    if(pNew) free(pNew);
-    if(pNew->dataptr) free(pNew->dataptr);
+        if(pNew) {
+            if(pNew->dataptr) free(pNew->dataptr);
+            free(pNew);
+        }
     return 0;
 }
 int empty_list(LISTA*lista){
@@ -126,9 +129,9 @@ int full_list(LISTA* lista){
     NODE* temp = (NODE*)malloc(sizeof(NODE));
     if(temp){
         free(temp);
-        return 1;
+        return 0;
     }
-    return 0;
+    return 1;
 }
 int list_count (LISTA* lista){
     return lista->count;

@@ -1,9 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "stackadt.h"
-#define STACK_OK 1
-#define STACK_ERR 0
-#define STACK_ERR_NULL -1
 
 typedef struct stNode {
     int data;
@@ -27,37 +24,52 @@ STACK* create_stack()
     stack->head = NULL;
     return stack;
 }
-int push_stack(STACK* stack,int valor)
+void push_stack(STACK* stack,int valor)
 {
-    if(stack == NULL) return STACK_ERR_NULL;
+    if(stack == NULL){
+        printf("\nNão foi possível adicionar um elemento à pilha\n");
+        return;
+    }
     NODE* node = (NODE*)malloc(sizeof(NODE));
-    if (node == NULL) return STACK_ERR_NULL;
+    if (node == NULL){
+        printf("\nErro de Alocação de memória\n");
+        return;
+    }
     node->data = valor;
     node->prox = stack->head;
     stack->head = node;
     stack->count++;
-    return STACK_OK;
+    return;
 }
-int pop_stack(STACK* stack, int *out)
+void pop_stack(STACK* stack, int *out)
 {
-    if(stack == NULL || out == NULL) return STACK_ERR_NULL;
-    if(empty_stack(stack)) return STACK_ERR;
+    if(stack == NULL || out == NULL){
+        printf("\nNão Foi possível remover um elemento no topo da pilha\n");
+        return;
+    }
+    if(empty_stack(stack)){
+        printf("\nNão é possível remover um elemento de uma pilha vazia!\n");
+        return;
+    }
     NODE* aux = stack->head;
     *out = aux->data;
     stack->head = stack->head->prox;
     free(aux);
     stack->count--;
-    return STACK_OK;
+    return;
 }
-int peek(STACK* stack, int *out)
+void peek(STACK* stack, int *out)
 {
-    if(stack == NULL || out == NULL) return STACK_ERR_NULL;
+    if(stack == NULL || out == NULL){
+        printf("\nNão foi possível verificar o elemento no topo da pilha\n");
+        return;
+    }
     if(empty_stack(stack))
     {
-        return STACK_ERR;
+        printf("\nA pilha está vazia!\n");
     }
     *out = stack->head->data;
-    return STACK_OK;
+    return;
 }
 int empty_stack(STACK*stack)
 {
@@ -67,9 +79,9 @@ int stack_count(STACK*stack)
 {
     return stack->count;
 }
-int destroy_stack(STACK*stack)
+void destroy_stack(STACK*stack)
 {
-    if (stack == NULL) return STACK_ERR_NULL;
+    if (stack == NULL) return;
     NODE *temp;
     while(!empty_stack(stack))
     {
@@ -78,5 +90,5 @@ int destroy_stack(STACK*stack)
         free(temp);
     }
     free(stack);
-    return STACK_OK;
+    return;
 }
