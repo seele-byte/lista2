@@ -28,7 +28,7 @@ LISTA* criar_lista(int (*compare_function)(void*argu1,void*argu2)){
 }
 static int _search(LISTA*, NODE**, NODE**, void*);
 static int _insert(LISTA*, NODE*, void*, size_t);
-static void _delete(LISTA*, NODE*, NODE*);
+static void _delete(LISTA*, NODE*);
 int inserir_elemento(LISTA* lista,void*datainPtr,size_t size){
     int status,found;
     NODE *pPre,*pLoc;
@@ -42,20 +42,20 @@ int remover_elemento(LISTA* lista,void*dataptr)
     int found;
     NODE *pPre,*pLoc;
     found = _search(lista,&pPre,&pLoc,dataptr);
-    if(found) _delete(lista,pPre,pLoc);
+    if(found) _delete(lista,pLoc);
     return found;
 }
-static void _delete(LISTA*lista,NODE*pPre,NODE*pLoc)
+static void _delete(LISTA*lista,NODE*pLoc)
 {
-    if(!pPre){
-        lista->head = pLoc->next;
-    }
-    else{
-        pPre->next = pLoc->next;
-    }
-    lista->count--;
-    free(pLoc->dataptr);
-    free(pLoc);
+   if(pLoc->next == pLoc){ // um elem
+     lista->head = NULL;
+   }else{ // mais elem
+    pLoc->prev->next = pLoc->next;
+    pLoc->next->prev = pLoc->prev;
+        if(pLoc == lista->head) lista->head = pLoc->next;
+   }
+   free(pLoc->dataptr);
+   free(pLoc);
 }
 int buscar_elemento(LISTA* lista,void*key, void**pdataoutPtr)
 {
@@ -71,14 +71,13 @@ int buscar_elemento(LISTA* lista,void*key, void**pdataoutPtr)
     return found;
 }
 void destruir_lista(LISTA *lista){
-    NODE *deletePtr;
-    while(lista){
-        while(lista->count > 0){
-            free(lista->head->dataptr);
-            deletePtr = lista->head;
-            lista->head = lista->head->next;
-            lista->count--;
-        }
+    NODE* aux = lista->head;
+
+    for(int i=0; i<lista->count; i++){
+        NODE* next = aux->next;
+        free(aux->dataptr);
+        free(aux);
+        aux = next;
     }
     free(lista);
 }
@@ -170,4 +169,36 @@ int full_list(LISTA* lista){
 }
 int list_count (LISTA* lista){
     return lista->count;
+}
+
+void forward(LISTA* lista, void (*print)(void*))
+{
+    if(lista->head == NULL)
+        return;
+
+    NODE* aux = lista->head;
+
+    do{
+
+        print(aux->dataptr);
+
+        aux = aux->next;
+
+    }while(aux != lista->head);
+}
+
+void backward(LISTA* lista, void (*print)(void*))
+{
+    if(lista->head == NULL)
+        return;
+
+    NODE* aux = lista->head->prev;
+
+    do{
+
+        print(aux->dataptr);
+
+        aux = aux->prev;
+
+    }while(aux != lista->head->prev);
 }
