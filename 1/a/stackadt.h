@@ -1,3 +1,7 @@
+#define TAMANHO 10
+#define STACK_OK 1
+#define STACK_ERR 0
+#define STACK_ERR_NULL -1
 typedef struct stack STACK;
 //cria uma estrutura stack
 STACK* create_stack();

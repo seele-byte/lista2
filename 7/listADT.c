@@ -10,6 +10,7 @@ typedef struct stNode {
 }NODE;
 typedef struct stlista{
     NODE* head;
+    NODE* tail;
     int count;
     int (*compare) (void* argu1, void* argu2);
 } LISTA;
@@ -19,6 +20,7 @@ LISTA* criar_lista(int (*compare_function)(void*argu1,void*argu2)){
     if(lista)
     {
         lista->head = NULL;
+        lista->tail = NULL;
         lista->count = 0;
         lista->compare = compare_function;
     }
